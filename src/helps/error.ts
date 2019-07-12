@@ -4,7 +4,7 @@
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
  * @Last Modified time: 2019-06-28
- **/
+ */
 
 import {AxiosRequestConfig, AxiosResponse} from '../types'
 
@@ -38,12 +38,13 @@ export class AxiosError extends Error {
     this.response = response;
     this.isAxiosError = true;
 
+    // 这里是为了解决TS中class的一个坑。如果不调用以下方法，类实例化后，外部将无法调用类的成员方法。instanceof也将无法被正确的监测。
     Object.setPrototypeOf(this, AxiosError.prototype);
   }
 }
 
 /**
- *
+ * 工厂模式
  * @param {string} message 报错信息
  * @param {AxiosRequestConfig} config 请求参数的类型接口
  * @param {string | null} code 错误代码

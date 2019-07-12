@@ -4,11 +4,11 @@
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
  * @Last Modified time: 2019-06-28
- **/
+ */
 
-import {AxiosRequestConfig, AxiosPromise, AxiosResponse} from './types';
-import {parseHeaders} from './helps/headers'
-import {createError} from './helps/error'
+import {AxiosRequestConfig, AxiosPromise, AxiosResponse} from '../types'
+import {parseHeaders} from '../helps/headers'
+import {createError} from '../helps/error'
 
 /**
  * XMLHttpRequest主程序
@@ -33,7 +33,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
 
     // 定义请求的类型、url以及是否异步处理请求
-    request.open(method.toUpperCase(), url, true);
+    request.open(method.toUpperCase(), url!, true);
 
     /**
      * 监听readyState变化的回调函数。当readyState不等于4或status等于0的时候，直接终止回调。

@@ -4,7 +4,7 @@
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
  * @Last Modified time: 2019-06-28
- **/
+ */
 
 const toString = Object.prototype.toString;
 
@@ -28,4 +28,35 @@ export function isDate(val: any): val is Date {
  */
 export function isPlainObject(val: any): val is Object {
   return toString.call(val) === '[object Object]';
+}
+
+/**
+ * 对象拷贝，将被拷贝的对象中的属性拷贝至目标对象。
+ * @param to 目标对象
+ * @param from 被拷贝对象
+ */
+export function extend<T, U>(to: T, from: U): T & U {
+  for(const key in from) {
+    ;(to as T & U)[key] = from[key] as any;
+  }
+  return to as T & U;
+}
+
+export function deepMerge(...objs: any[]): any {
+  const result = Object.create(null);
+  objs.forEach(obj => {
+    Object.keys(obj).forEach(key => {
+      const val = obj[key];
+      if(isPlainObject(val)) {
+        if(isPlainObject(result[key])) {
+          result[key] = deepMerge(result[key], val);
+        } else {
+          result[key] = deepMerge(val);
+        }
+      } else {
+        result[key] = val;
+      }
+    })
+  })
+  return result;
 }
