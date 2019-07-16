@@ -3,19 +3,27 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-07-02
+ * @Last Modified time: 2019-07-16
  */
 
 // 进一步约束Method属性传入的字符内容
 import InterceptorManager from '../core/InterceptorManager'
 
-export type Method = 'get' | 'GET'
-| 'options' | 'OPTIONS'
-| 'post' | 'POST'
-| 'delete' | 'DELETE'
-| 'put' | 'PUT'
-| 'patch' | 'PATCH'
-| 'head' | 'HEAD'
+export type Method =
+  | 'get'
+  | 'GET'
+  | 'options'
+  | 'OPTIONS'
+  | 'post'
+  | 'POST'
+  | 'delete'
+  | 'DELETE'
+  | 'put'
+  | 'PUT'
+  | 'patch'
+  | 'PATCH'
+  | 'head'
+  | 'HEAD'
 
 // 约束请求中传入参数类型的接口
 export interface AxiosRequestConfig {
@@ -26,6 +34,9 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+  cancelToken?: CancelToken
   [propName: string]: any
 }
 
@@ -40,8 +51,7 @@ export interface AxiosResponse<T = any> {
 }
 
 // 定义接口AxiosPromise继承自TS库中的Promise接口，定义泛型AxiosResponse以约束Promise中返回的数据类型
-export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {
-}
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 // 定义接口AxiosError继承自TS库中的Error接口
 export interface AxiosError extends Error {
@@ -56,7 +66,7 @@ export interface AxiosError extends Error {
 export interface Axios {
   defaults: AxiosRequestConfig
   interceptors: {
-    request: AxiosInterceptorManager<AxiosRequestConfig>,
+    request: AxiosInterceptorManager<AxiosRequestConfig>
     response: AxiosInterceptorManager<AxiosResponse>
   }
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
@@ -75,6 +85,14 @@ export interface AxiosInstance extends Axios {
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
+// 定义接口AxiosStatic继承自接口AxiosInstance，以约束创建Axios实例时传入的参数和返回类型。
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+  cancelToken: CancelTokenStatic
+  cancel: CancelStatic
+  isCancel: (value: any) => boolean
+}
+
 // 定义接口AxiosInterceptorManager以约束拦截器中的use方法中传入的成功回调与失败回调的类型,以及eject方法的类型。(删除某个拦截器时用)
 export interface AxiosInterceptorManager<T> {
   use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
@@ -85,7 +103,45 @@ export interface AxiosInterceptorManager<T> {
 export interface ResolvedFn<T> {
   (val: T): T | Promise<T>
 }
+
 // 定义接口RejectedFn以约束拦截器中的失败回调(处理一些请求错误)的参数类型与返回类型。
 export interface RejectedFn {
   (error: any): any
+}
+
+// 定义接口AxiosTransformer以约束请求响应配置化方法传入的参数类型和返回类型
+export interface AxiosTransformer {
+  (data: any, header?: any): any
+}
+
+export interface CancelToken {
+  promise: Promise<Cancel>
+  reason?: Cancel
+  throwIfRequested(): void
+}
+
+export interface Canceler {
+  (message?: string): void
+}
+
+export interface CancelExecutor {
+  (cancel: Canceler): void
+}
+
+export interface CancelTokenSource {
+  token: CancelToken
+  cancel: Canceler
+}
+
+export interface CancelTokenStatic {
+  new (executor: CancelExecutor): CancelToken
+  source(): CancelTokenSource
+}
+
+export interface Cancel {
+  message?: string
+}
+
+export interface CancelStatic {
+  new (message?: string): Cancel
 }

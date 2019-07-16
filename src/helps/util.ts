@@ -3,10 +3,10 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-06-28
+ * @Last Modified time: 2019-07-15
  */
 
-const toString = Object.prototype.toString;
+const toString = Object.prototype.toString
 
 /**
  * 判断数据类型是否为Date对象
@@ -14,7 +14,7 @@ const toString = Object.prototype.toString;
  * @returns {val is Date}
  */
 export function isDate(val: any): val is Date {
-  return toString.call(val) === '[object Date]';
+  return toString.call(val) === '[object Date]'
 }
 
 // export function isObject(val: any): val is Object {
@@ -27,7 +27,7 @@ export function isDate(val: any): val is Date {
  * @returns {val is Object}
  */
 export function isPlainObject(val: any): val is Object {
-  return toString.call(val) === '[object Object]';
+  return toString.call(val) === '[object Object]'
 }
 
 /**
@@ -36,27 +36,31 @@ export function isPlainObject(val: any): val is Object {
  * @param from 被拷贝对象
  */
 export function extend<T, U>(to: T, from: U): T & U {
-  for(const key in from) {
-    ;(to as T & U)[key] = from[key] as any;
+  for (const key in from) {
+    ;(to as T & U)[key] = from[key] as any
   }
-  return to as T & U;
+  return to as T & U
 }
 
+/**
+ * 深拷贝
+ * @param objs 传入的参数
+ */
 export function deepMerge(...objs: any[]): any {
-  const result = Object.create(null);
+  const result = Object.create(null)
   objs.forEach(obj => {
     Object.keys(obj).forEach(key => {
-      const val = obj[key];
-      if(isPlainObject(val)) {
-        if(isPlainObject(result[key])) {
-          result[key] = deepMerge(result[key], val);
+      const val = obj[key]
+      if (isPlainObject(val)) {
+        if (isPlainObject(result[key])) {
+          result[key] = deepMerge(result[key], val)
         } else {
-          result[key] = deepMerge(val);
+          result[key] = deepMerge(val)
         }
       } else {
-        result[key] = val;
+        result[key] = val
       }
     })
   })
-  return result;
+  return result
 }

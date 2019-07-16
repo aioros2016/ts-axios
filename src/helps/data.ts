@@ -6,7 +6,7 @@
  * @Last Modified time: 2019-06-28
  */
 
-import {isPlainObject} from './util'
+import { isPlainObject } from './util'
 
 /**
  * 对请求中传入的data参数做格式转换
@@ -14,12 +14,11 @@ import {isPlainObject} from './util'
  * @returns {any}
  */
 export function transformRequest(data: any): any {
-
   // 如果data是简单对象类型，则转化为JSON字符串并返回，否则直接返回data。
   if (isPlainObject(data)) {
-    return JSON.stringify(data);
+    return JSON.stringify(data)
   }
-  return data;
+  return data
 }
 
 /**
@@ -28,14 +27,14 @@ export function transformRequest(data: any): any {
  * @returns {any}
  */
 export function transformResponse(data: any): any {
-
   // 如果在响应中获取到的data数据类型为JSON字符串，就将其转为JSON格式并返回。
-  if(typeof data === 'string') {
+  if (typeof data === 'string') {
     try {
-      data = JSON.parse(data);
+      console.log(typeof data)
+      data = JSON.parse(data)
     } catch (e) {
       // do nothing
     }
   }
-  return data;
+  return data
 }

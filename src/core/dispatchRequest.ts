@@ -3,14 +3,14 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-06-28
+ * @Last Modified time: 2019-07-15
  */
 
-import {AxiosRequestConfig, AxiosPromise, AxiosResponse} from '../types'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import xhr from './xhr'
-import {buildURL} from '../helps/url'
-import {transformRequest, transformResponse} from '../helps/data'
-import {processHeaders} from '../helps/headers'
+import { buildURL } from '../helps/url'
+import { flattenHeaders } from '../helps/headers'
+import transform from './transform'
 
 /**
  * axios发起请求前的最后一步，序列号参数，然后发起请求。
@@ -18,10 +18,11 @@ import {processHeaders} from '../helps/headers'
  * @returns {AxiosPromise} 实例化方法返回promise的类型接口
  */
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
-  processConfig(config);
+  throwIfCancellationRequested(config)
+  processConfig(config)
   return xhr(config).then(res => {
-    return transformResponseData(res);
-  });
+    return transformResponseData(res)
+  })
 }
 
 /**
@@ -29,9 +30,10 @@ export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromis
  * @param {AxiosRequestConfig} config 请求参数的类型接口
  */
 function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformURL(config);
-  config.headers = transformHeaders(config);
-  config.data = transformRequestData(config);
+  console.log(config)
+  config.url = transformURL(config)
+  config.data = transform(config.data, config.headers, config.transformRequest)
+  config.headers = flattenHeaders(config.headers, config.method!)
 }
 
 /**
@@ -40,27 +42,8 @@ function processConfig(config: AxiosRequestConfig): void {
  * @returns {string}
  */
 function transformURL(config: AxiosRequestConfig): string {
-  const {url, params} = config;
-  return buildURL(url!, params);
-}
-
-/**
- * 对传入的参数data进行处理
- * @param {AxiosRequestConfig} config 请求参数的类型接口
- * @returns {any}
- */
-function transformRequestData(config: AxiosRequestConfig): any {
-  return transformRequest(config.data);
-}
-
-/**
- * 对传入的参数headers进行处理
- * @param {AxiosRequestConfig} config 请求参数的类型接口
- * @returns {any}
- */
-function transformHeaders(config: AxiosRequestConfig): any {
-  const {headers = {}, data} = config;
-  return processHeaders(headers, data);
+  const { url, params } = config
+  return buildURL(url!, params)
 }
 
 /**
@@ -69,6 +52,10 @@ function transformHeaders(config: AxiosRequestConfig): any {
  * @returns {AxiosResponse}
  */
 function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data);
-  return res;
+  res.data = transform(res.data, res.headers, res.config.transformResponse)
+  return res
+}
+
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) config.cancelToken.throwIfRequested()
 }

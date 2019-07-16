@@ -1,8 +1,9 @@
-import axios, { AxiosTransformer } from '../../src/index'
+import axios from '../../src/index'
 import qs from 'qs'
+import { AxiosTransformer } from '../../src/types'
 
 // axios.defaults.headers.common['test2'] = 123
-//
+
 // axios({
 //   url: '/config/post',
 //   method: 'post',
@@ -15,7 +16,7 @@ import qs from 'qs'
 // }).then((res) => {
 //   console.log(res.data)
 // })
-//
+
 // axios({
 //   transformRequest: [(function(data) {
 //     return qs.stringify(data)
