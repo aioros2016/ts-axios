@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-07-12
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-07-15
+ * @Last Modified time: 2019-08-19
  */
 import { AxiosRequestConfig } from './types'
 import { processHeaders } from './helps/headers'
@@ -18,6 +18,8 @@ const defaults: AxiosRequestConfig = {
       Accept: 'application/json, text/plain, */*'
     }
   },
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
   transformRequest: [
     function(data: any, headers: any): any {
       processHeaders(headers, data)

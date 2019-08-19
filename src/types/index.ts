@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-07-16
+ * @Last Modified time: 2019-08-19
  */
 
 // 进一步约束Method属性传入的字符内容
@@ -37,6 +37,11 @@ export interface AxiosRequestConfig {
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
   cancelToken?: CancelToken
+  withCredentials?: boolean
+  xsrfCookieName?: string
+  xsrfHeaderName?: string
+  onDownloadProgress?: (e: ProgressEvent) => void
+  onUploadProgress?: (e: ProgressEvent) => void
   [propName: string]: any
 }
 

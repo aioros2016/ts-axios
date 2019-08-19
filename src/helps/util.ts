@@ -30,6 +30,10 @@ export function isPlainObject(val: any): val is Object {
   return toString.call(val) === '[object Object]'
 }
 
+export function isFormData(val: any): val is FormData {
+  return typeof val !== 'undefined' && val instanceof FormData
+}
+
 /**
  * 对象拷贝，将被拷贝的对象中的属性拷贝至目标对象。
  * @param to 目标对象
