@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-07-15
+ * @Last Modified time: 2019-08-21
  */
 
 const toString = Object.prototype.toString
@@ -34,6 +34,10 @@ export function isFormData(val: any): val is FormData {
   return typeof val !== 'undefined' && val instanceof FormData
 }
 
+export function isURLSearchParams(val: any): val is URLSearchParams {
+  return typeof val !== 'undefined' && val instanceof URLSearchParams
+}
+
 /**
  * 对象拷贝，将被拷贝的对象中的属性拷贝至目标对象。
  * @param to 目标对象
@@ -52,19 +56,23 @@ export function extend<T, U>(to: T, from: U): T & U {
  */
 export function deepMerge(...objs: any[]): any {
   const result = Object.create(null)
+
   objs.forEach(obj => {
-    Object.keys(obj).forEach(key => {
-      const val = obj[key]
-      if (isPlainObject(val)) {
-        if (isPlainObject(result[key])) {
-          result[key] = deepMerge(result[key], val)
+    if (obj) {
+      Object.keys(obj).forEach(key => {
+        const val = obj[key]
+        if (isPlainObject(val)) {
+          if (isPlainObject(result[key])) {
+            result[key] = deepMerge(result[key], val)
+          } else {
+            result[key] = deepMerge(val)
+          }
         } else {
-          result[key] = deepMerge(val)
+          result[key] = val
         }
-      } else {
-        result[key] = val
-      }
-    })
+      })
+    }
   })
+
   return result
 }

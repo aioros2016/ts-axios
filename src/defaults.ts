@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-07-12
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-08-19
+ * @Last Modified time: 2019-08-21
  */
 import { AxiosRequestConfig } from './types'
 import { processHeaders } from './helps/headers'
@@ -30,7 +30,10 @@ const defaults: AxiosRequestConfig = {
     function(data: any): any {
       return transformResponse(data)
     }
-  ]
+  ],
+  validateStatus(status: number): boolean {
+    return status >= 200 && status < 300
+  }
 }
 
 // 不带requestData的请求类型，默认配置的请求头中不做任何设置

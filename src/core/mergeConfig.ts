@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-07-12
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-07-15
+ * @Last Modified time: 2019-08-21
  */
 import { AxiosRequestConfig } from '../types'
 import { isPlainObject, deepMerge } from '../helps/util'
@@ -58,8 +58,8 @@ stratKeysFromVal2.forEach(key => {
   strats[key] = fromVal2Strat
 })
 
-// 将headers字段指向深拷贝策略
-const stratKeysDeepMerge = ['headers']
+// 将headers与auth字段指向深拷贝策略
+const stratKeysDeepMerge = ['headers', 'auth']
 stratKeysDeepMerge.forEach(key => {
   strats[key] = deepMergeStrat
 })

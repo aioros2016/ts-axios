@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-08-19
+ * @Last Modified time: 2019-08-21
  */
 
 // 进一步约束Method属性传入的字符内容
@@ -42,6 +42,10 @@ export interface AxiosRequestConfig {
   xsrfHeaderName?: string
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
+  auth?: AxiosBasicCredentials
+  validateStatus?: (status: number) => boolean
+  paramsSerializer?: (params: any) => string
+  baseURL?: string
   [propName: string]: any
 }
 
@@ -82,6 +86,7 @@ export interface Axios {
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  getUri(config?: AxiosRequestConfig): string
 }
 
 // 定义接口AxiosInstance继承自接口Axios，并对2种传参的可能做了重载。
@@ -96,6 +101,13 @@ export interface AxiosStatic extends AxiosInstance {
   cancelToken: CancelTokenStatic
   cancel: CancelStatic
   isCancel: (value: any) => boolean
+  all<T>(Promises: Array<T | Promise<T>>): Promise<T[]>
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+  Axios: AxiosClassStatic
+}
+
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios
 }
 
 // 定义接口AxiosInterceptorManager以约束拦截器中的use方法中传入的成功回调与失败回调的类型,以及eject方法的类型。(删除某个拦截器时用)
@@ -149,4 +161,9 @@ export interface Cancel {
 
 export interface CancelStatic {
   new (message?: string): Cancel
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }

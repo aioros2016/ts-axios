@@ -19,8 +19,6 @@ export default function transform(
   headers: any,
   fns?: AxiosTransformer | AxiosTransformer[]
 ): any {
-  console.log('fns:', fns)
-
   // 如果不需要对配置或响应做处理，则直接返回data数据。
   if (!fns) {
     return data
@@ -33,9 +31,7 @@ export default function transform(
 
   // 遍历传入的数组，并依次执行数据中的方法。
   fns.forEach(fn => {
-    console.log('before:', data)
     data = fn(data, headers)
-    console.log('after:', data)
   })
   return data
 }

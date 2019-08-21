@@ -30,7 +30,6 @@ export function transformResponse(data: any): any {
   // 如果在响应中获取到的data数据类型为JSON字符串，就将其转为JSON格式并返回。
   if (typeof data === 'string') {
     try {
-      console.log(typeof data)
       data = JSON.parse(data)
     } catch (e) {
       // do nothing

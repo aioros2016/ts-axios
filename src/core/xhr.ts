@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-08-19
+ * @Last Modified time: 2019-08-21
  */
 
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
@@ -32,7 +32,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfCookieName,
       xsrfHeaderName,
       onDownloadProgress,
-      onUploadProgress
+      onUploadProgress,
+      auth,
+      validateStatus
     } = config
 
     // 实例化XMLHttpRequest对象
@@ -139,6 +141,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
       }
 
+      if (auth) {
+        headers['Authorization'] = 'Basic ' + btoa(auth.username + ':' + auth.password)
+      }
+
       // 遍历请求头，如果data为null，删除请求头中的content-type，并且设置请求头。
       Object.keys(headers).forEach(name => {
         if (data === null && name.toLocaleLowerCase() === 'content-type') {
@@ -166,7 +172,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
      * @param {AxiosResponse} response
      */
     function handleResponse(response: AxiosResponse): void {
-      if (response.status >= 200 && response.status < 300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
         reject(

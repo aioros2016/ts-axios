@@ -8,7 +8,7 @@
 
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import xhr from './xhr'
-import { buildURL } from '../helps/url'
+import { buildURL, combineURL, isAbsoluteURL } from '../helps/url'
 import { flattenHeaders } from '../helps/headers'
 import transform from './transform'
 
@@ -30,7 +30,6 @@ export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromis
  * @param {AxiosRequestConfig} config 请求参数的类型接口
  */
 function processConfig(config: AxiosRequestConfig): void {
-  console.log(config)
   config.url = transformURL(config)
   config.data = transform(config.data, config.headers, config.transformRequest)
   config.headers = flattenHeaders(config.headers, config.method!)
@@ -41,9 +40,12 @@ function processConfig(config: AxiosRequestConfig): void {
  * @param {AxiosRequestConfig} config 请求参数的类型接口
  * @returns {string}
  */
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url!, params)
+export function transformURL(config: AxiosRequestConfig): string {
+  let { url, params, paramsSerializer, baseURL } = config
+  if (baseURL && !isAbsoluteURL(url!)) {
+    url = combineURL(baseURL, url)
+  }
+  return buildURL(url!, params, paramsSerializer)
 }
 
 /**
