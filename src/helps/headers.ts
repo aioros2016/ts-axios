@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-07-15
+ * @Last Modified time: 2019-08-23
  */
 
 import { deepMerge, isPlainObject } from './util'
@@ -60,10 +60,10 @@ export function parseHeaders(headers: string): any {
   // 将传入的headers字符串通过编码换行切割成数组
   headers.split('\r\n').forEach(line => {
     // 遍历该数组，将字符串通过:切割成数组。数组中所有的key去头尾空格并转为小写设置为空对象parsed的属性，所有val去除头尾空格并赋值给key，最后返回该对象。
-    let [key, val] = line.split(':')
+    let [key, ...vals] = line.split(':')
     key = key.trim().toLowerCase()
     if (!key) return
-    if (val) val = val.trim()
+    const val = vals.join(':').trim()
     parsed[key] = val
   })
   return parsed

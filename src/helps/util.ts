@@ -1,7 +1,7 @@
 /**
- * @Title: 工具方法模块
+ * @Title: 工具方法单元测试
  * @Author: Lizhigang
- * @Date: 2019-06-27
+ * @Date: 2019-08-21
  * @Last Modified by: Lizhigang
  * @Last Modified time: 2019-08-21
  */
@@ -30,10 +30,18 @@ export function isPlainObject(val: any): val is Object {
   return toString.call(val) === '[object Object]'
 }
 
+/**
+ * 判断数据类型是否为FormData对象
+ * @param val 传入的数据
+ */
 export function isFormData(val: any): val is FormData {
   return typeof val !== 'undefined' && val instanceof FormData
 }
 
+/**
+ * 判断数据类型是否为URLSearchParams对象
+ * @param val 传入的数据
+ */
 export function isURLSearchParams(val: any): val is URLSearchParams {
   return typeof val !== 'undefined' && val instanceof URLSearchParams
 }

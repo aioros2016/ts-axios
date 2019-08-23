@@ -3,7 +3,7 @@
  * @Author: Lizhigang
  * @Date: 2019-06-27
  * @Last Modified by: Lizhigang
- * @Last Modified time: 2019-08-21
+ * @Last Modified time: 2019-08-23
  */
 
 import { isDate, isPlainObject, isURLSearchParams } from './util'
@@ -118,7 +118,7 @@ export function isURLSameOrigin(requestURL: string): boolean {
  * @param url 传入的链接
  */
 export function isAbsoluteURL(url: string): boolean {
-  return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
 }
 
 /**
