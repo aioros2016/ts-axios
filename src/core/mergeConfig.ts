@@ -26,7 +26,7 @@ function defaultsStrat(val1: any, val2: any): any {
  * @param val2 自定义配置
  */
 function fromVal2Strat(val1: any, val2: any): any {
-  if (val2 !== 'undefined') {
+  if (typeof val2 !== 'undefined') {
     return val2
   }
 }
@@ -46,7 +46,7 @@ function deepMergeStrat(val1: any, val2: any): any {
   } else if (isPlainObject(val1)) {
     // 如果自定义配置没有值，并且默认配置是个对象，返回深拷贝后的默认配置。
     return deepMerge(val1)
-  } else if (typeof val1 !== 'undefined') {
+  } else {
     // 如果自定义配置没有值，并且默认配置不是个对象，返回默认配置。
     return val1
   }

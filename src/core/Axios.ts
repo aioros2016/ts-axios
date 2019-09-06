@@ -67,6 +67,7 @@ export default class Axios {
 
     // 将默认配置与传入的自定义配置项合并
     config = mergeConfig(this.defaults, config)
+    config.method = config.method.toLowerCase()
 
     // 定义Promise链
     const chain: PromiseChain<any>[] = [

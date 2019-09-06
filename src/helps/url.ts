@@ -92,7 +92,6 @@ export function buildURL(
     // 查询传入的url中是否带有hash值，如果存在就删除。
     const markIndex = url.indexOf('#')
     if (markIndex !== -1) {
-      console.log(url)
       url = url.slice(0, markIndex)
     }
 

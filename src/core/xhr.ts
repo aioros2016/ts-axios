@@ -24,7 +24,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       url,
       method = 'get',
       data = null,
-      headers,
+      headers = {},
       responseType,
       timeout,
       cancelToken,
@@ -177,7 +177,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       } else {
         reject(
           createError(
-            `request failed with status code ${response.status}`,
+            `Request failed with status code ${response.status}`,
             config,
             null,
             request,
