@@ -22,7 +22,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
     const {
       url,
-      method = 'get',
+      method,
       data = null,
       headers = {},
       responseType,
@@ -41,7 +41,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     const request = new XMLHttpRequest()
 
     // 定义请求的类型、url以及是否异步处理请求
-    request.open(method.toUpperCase(), url!, true)
+    request.open(method!.toUpperCase(), url!, true)
 
     // 配置request对象
     configureRequest()
@@ -92,7 +92,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         const responseHeaders = parseHeaders(request.getAllResponseHeaders())
 
         // 定义返回响应的数据类型
-        const responseData = responseType !== 'text' ? request.response : request.responseText
+        const responseData =
+          responseType && responseType !== 'text' ? request.response : request.responseText
         const response: AxiosResponse = {
           data: responseData,
           status: request.status,
@@ -160,10 +161,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
      */
     function processCancel(): void {
       if (cancelToken) {
-        cancelToken.promise.then(reason => {
-          request.abort()
-          reject(reason)
-        })
+        cancelToken.promise
+          .then(reason => {
+            request.abort()
+            reject(reason)
+          })
+          .catch(
+            /* istanbul ignore next */
+            () => {
+              // do nothing
+            }
+          )
       }
     }
 

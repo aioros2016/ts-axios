@@ -6,7 +6,7 @@
  * @Last Modified time: 2019-06-28
  */
 
-import {AxiosRequestConfig, AxiosResponse} from '../types'
+import { AxiosRequestConfig, AxiosResponse } from '../types'
 
 // 创建类AxiosError继承于TS库中的Error类
 export class AxiosError extends Error {
@@ -24,6 +24,7 @@ export class AxiosError extends Error {
    * @param request XMLHttpRequest对象
    * @param {AxiosResponse} response 返回响应的类型接口
    */
+  /* istanbul ignore next */
   constructor(
     message: string,
     config: AxiosRequestConfig,
@@ -31,15 +32,15 @@ export class AxiosError extends Error {
     request?: any,
     response?: AxiosResponse
   ) {
-    super(message);
-    this.config = config;
-    this.code = code;
-    this.request = request;
-    this.response = response;
-    this.isAxiosError = true;
+    super(message)
+    this.config = config
+    this.code = code
+    this.request = request
+    this.response = response
+    this.isAxiosError = true
 
     // 这里是为了解决TS中class的一个坑。如果不调用以下方法，类实例化后，外部将无法调用类的成员方法。instanceof也将无法被正确的监测。
-    Object.setPrototypeOf(this, AxiosError.prototype);
+    Object.setPrototypeOf(this, AxiosError.prototype)
   }
 }
 
@@ -59,8 +60,7 @@ export function createError(
   request?: any,
   response?: AxiosResponse
 ) {
-
   // 实例化AxiosError类，并且传入自定义参数，最后返回该对象。
-  const error = new AxiosError(message, config, code, request, response);
-  return error;
+  const error = new AxiosError(message, config, code, request, response)
+  return error
 }
