@@ -1,2 +1,2 @@
 # ts-axios
-使用TypeScript重构axios项目
+使用TypeScript重构axios
